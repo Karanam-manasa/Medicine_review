@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medicine Review Predictor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    
+
+    h2 {
+      color: #0d47a1;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 15px 0 5px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #1976d2;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 25px;
+      border: none;
+      border-radius: 8px;
+      background-color: #0d47a1;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #08306b;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 17px;
+      font-weight: bold;
+      color: #008000;
+      background: #e6ffe6;
+      border: 1px solid #b2fab4;
+      padding: 12px;
+      border-radius: 10px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+   
+    <h2>🔍 Predict Excellent Review %</h2>
+    <form id="predict-form">
+      <label for="composition">Composition:</label>
+      <input type="text" id="composition" placeholder="e.g. Dolo-65" />
+
+      <label for="uses">Uses:</label>
+      <input type="text" id="uses" placeholder="e.g. Fever, Cold" />
+
+      <label for="side">Side Effects:</label>
+      <input type="text" id="side" placeholder="e.g. Headache, Drowsiness" />
+
+      <label for="manufacturer">Manufacturer:</label>
+      <input type="text" id="manufacturer" placeholder="e.g. XYZ Labs" />
+
+      <label for="avg">Average Review %:</label>
+      <input type="number" id="avg" placeholder="e.g. 72.5" step="any" />
+
+      <label for="poor">Poor Review %:</label>
+      <input type="number" id="poor" placeholder="e.g. 9" step="any" />
+
+      <button type="submit">🔮 Predict Now</button>
+    </form>
+    <p id="result" style="display:none;"></p>
+  </div>
+
+  <script>
+    document.getElementById("predict-form").onsubmit = async (e) => {
+      e.preventDefault();
+      const resultBox = document.getElementById("result");
+      resultBox.style.display = "none";
+      const response = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          "Composition": document.getElementById("composition").value,
+          "Uses": document.getElementById("uses").value,
+          "Side_effects": document.getElementById("side").value,
+          "Manufacturer": document.getElementById("manufacturer").value,
+          "Average Review %": parseFloat(document.getElementById("avg").value),
+          "Poor Review %": parseFloat(document.getElementById("poor").value)
+        })
+      });
+      const result = await response.json();
+      resultBox.innerText = "Predicted Excellent Review %: " + result.predicted_review_percent.toFixed(2) + "%";
+      resultBox.style.display = "block";
+    };
+  </script>
+</body>
+</html>
