@@ -1,5 +1,5 @@
 # 💊 Medicine Review Predictor
-This is a Machine Learning web app built with Flask to predict the **Excellent Review %** of a medicine based on its composition, uses, side effects, manufacturer, and other review metrics.
+This is a Machine Learning web app built with Flask to predict the Excellent Review % of a medicine based on its composition, uses, side effects, manufacturer, and other review metrics.
 
 ## 🚀 Features
 - Predicts Excellent Review % using Random Forest Regressor
